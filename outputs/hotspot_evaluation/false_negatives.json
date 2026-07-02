@@ -1,0 +1,206 @@
+{
+  "absolute": [
+    {
+      "image_id": "synth_0301",
+      "scenario": "03_MildHotspot_Connection",
+      "n_gt": 1,
+      "gt_peak_c": 73.75,
+      "ambient_c": 21.3,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_0302",
+      "scenario": "03_MildHotspot_Connection",
+      "n_gt": 1,
+      "gt_peak_c": 73.61,
+      "ambient_c": 19.09,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_0304",
+      "scenario": "03_MildHotspot_Connection",
+      "n_gt": 1,
+      "gt_peak_c": 73.97,
+      "ambient_c": 19.14,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_0316",
+      "scenario": "03_MildHotspot_Connection",
+      "n_gt": 1,
+      "gt_peak_c": 73.49,
+      "ambient_c": 18.65,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_0320",
+      "scenario": "03_MildHotspot_Connection",
+      "n_gt": 1,
+      "gt_peak_c": 75.68,
+      "ambient_c": 18.31,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1001",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 57.92,
+      "ambient_c": 19.28,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1002",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 58.09,
+      "ambient_c": 20.48,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1003",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 57.97,
+      "ambient_c": 21.72,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1004",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 57.66,
+      "ambient_c": 19.41,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1005",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 57.5,
+      "ambient_c": 20.3,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1006",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 57.62,
+      "ambient_c": 20.33,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1007",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 58.7,
+      "ambient_c": 19.72,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1008",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 58.19,
+      "ambient_c": 18.97,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1009",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 57.7,
+      "ambient_c": 20.92,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1010",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 58.28,
+      "ambient_c": 18.19,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1011",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 57.63,
+      "ambient_c": 19.48,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1012",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 58.23,
+      "ambient_c": 19.73,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1013",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 57.74,
+      "ambient_c": 18.43,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1014",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 58.1,
+      "ambient_c": 19.74,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1015",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 58.11,
+      "ambient_c": 21.96,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1016",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 58.16,
+      "ambient_c": 18.16,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1017",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 58.14,
+      "ambient_c": 21.22,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1018",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 57.86,
+      "ambient_c": 18.38,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1019",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 57.91,
+      "ambient_c": 19.56,
+      "reason": "missed a real hotspot"
+    },
+    {
+      "image_id": "synth_1020",
+      "scenario": "10_LoadHeating_Phase",
+      "n_gt": 1,
+      "gt_peak_c": 57.99,
+      "ambient_c": 21.71,
+      "reason": "missed a real hotspot"
+    }
+  ],
+  "statistical": [],
+  "hybrid": []
+}

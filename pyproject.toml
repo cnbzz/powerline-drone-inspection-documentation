@@ -1,0 +1,86 @@
+[project]
+name = "powerline-drone-inspection"
+version = "0.1.0"
+description = "Drone tabanli havai hat AI ariza tespit sistemi (RGB + termal goruntu analizi)"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+authors = [
+    { name = "Omer Kursat Canbaz" },
+]
+license = { text = "Proprietary" }
+keywords = ["drone", "powerline", "inspection", "yolo", "thermal", "computer-vision"]
+
+dependencies = [
+    # Core
+    "numpy",
+    "pandas",
+    "pyyaml",
+    "python-dotenv",
+    "loguru",
+    # Computer vision & ML
+    "opencv-python",
+    "pillow",
+    "ultralytics",
+    "torch",
+    "torchvision",
+    # EXIF & thermal
+    "exifread",
+    "piexif",
+    # dji-thermal-parser: DJI SDK gerekli, ileride eklenecek.
+    # Geospatial
+    "folium",
+    "geopy",
+    # Database
+    "sqlalchemy",
+    # Dashboard
+    "streamlit",
+    "plotly",
+    # Reporting
+    "reportlab",
+    "openpyxl",
+    "jinja2",
+    # Training monitoring
+    "tensorboard",
+    "wandb",
+    "tqdm",
+    "streamlit-folium>=0.27.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "black",
+    "ruff",
+    "ipykernel",
+    "jupyter",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu126" }
+torchvision = { index = "pytorch-cu126" }
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = "-ra --strict-markers"

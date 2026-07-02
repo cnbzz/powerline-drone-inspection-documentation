@@ -1,0 +1,16 @@
+[theme]
+# Streamlit'in kendi tema sistemini AÇIK MODA zorla (CSS override için temel).
+# Apple iOS Light paleti — load_css() ile aynı renkler, çift güvence.
+base = "light"
+primaryColor = "#007aff"
+backgroundColor = "#f2f2f7"
+secondaryBackgroundColor = "#ffffff"
+textColor = "#1c1c1e"
+font = "sans serif"
+
+[client]
+# Toolbar mode "minimal" — Streamlit'in kendi toolbar'ı küçülür
+toolbarMode = "minimal"
+
+[server]
+runOnSave = true

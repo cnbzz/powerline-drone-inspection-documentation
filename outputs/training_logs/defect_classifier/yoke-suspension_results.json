@@ -1,0 +1,58 @@
+{
+  "equipment": "yoke-suspension",
+  "classes": [
+    "good",
+    "rust"
+  ],
+  "best_val_f1": 1.0,
+  "test_acc": 0.9954876778896217,
+  "test_f1": 0.9963713490248594,
+  "confusion_matrix": [
+    [
+      5716,
+      26
+    ],
+    [
+      0,
+      20
+    ]
+  ],
+  "classification_report": {
+    "good": {
+      "precision": 1.0,
+      "recall": 0.9954719609892023,
+      "f1-score": 0.9977308430790713,
+      "support": 5742.0
+    },
+    "rust": {
+      "precision": 0.43478260869565216,
+      "recall": 1.0,
+      "f1-score": 0.6060606060606061,
+      "support": 20.0
+    },
+    "accuracy": 0.9954876778896217,
+    "macro avg": {
+      "precision": 0.717391304347826,
+      "recall": 0.9977359804946011,
+      "f1-score": 0.8018957245698387,
+      "support": 5762.0
+    },
+    "weighted avg": {
+      "precision": 0.9980381208215746,
+      "recall": 0.9954876778896217,
+      "f1-score": 0.9963713490248594,
+      "support": 5762.0
+    }
+  },
+  "training_time_seconds": 199.82127165794373,
+  "training_time_minutes": 3.3303545276323954,
+  "epochs_trained": 14,
+  "parameters": {
+    "total": 20180050,
+    "trainable": 20180050,
+    "total_mb": 76.98078155517578
+  },
+  "image_size": 384,
+  "architecture": "EfficientNetV2-S",
+  "timestamp": "2026-06-16T23:37:17.934329"
+}

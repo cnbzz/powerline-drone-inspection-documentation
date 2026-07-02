@@ -1,0 +1,43 @@
+{
+  "dataset": "teias_ir_vl (TEİAŞ powerline IR/VL, MIT, Yetgün & Gerek 2016)",
+  "structure": "powerline_database/ir/TV_IR_NNNN.bmp + vl/TV_VL_NNNN.bmp",
+  "n_thermal_claimed": 4000,
+  "n_rgb_claimed": 4000,
+  "catalog_heuristic": "ir/ klasörü → termal, vl/ klasörü → RGB (klasör yapısı ile birebir)",
+  "pairing": {
+    "matched_pairs": 4000,
+    "ir_unmatched": 0,
+    "series": "TV_* (2000 çift) + TY_* (2000 çift)",
+    "scheme": "<seri>_IR_NNNN ↔ <seri>_VL_NNNN (IR→VL takas)",
+    "result": "Tam eşleşme: her IR görüntüsünün aynı seri+ID'li bir VL karşılığı var"
+  },
+  "thermal_sample_findings": {
+    "ir_group": {
+      "n": 30,
+      "avg_channel_spread": 7.466,
+      "avg_mean_saturation": 0.107,
+      "avg_unique_colors_ds": 716.933,
+      "pct_grayscale": 3.3,
+      "avg_brightness": 128.627
+    },
+    "vl_group": {
+      "n": 30,
+      "avg_channel_spread": 48.298,
+      "avg_mean_saturation": 0.472,
+      "avg_unique_colors_ds": 962.733,
+      "pct_grayscale": 0.0,
+      "avg_brightness": 118.347
+    },
+    "observation": "IR grubu düşük-doygunluk/grayscale, VL grubu renkli — IR ayrı bir modalite (infrared) görünümünde."
+  },
+  "verdict": "DOĞRULANDI (termal/IR)",
+  "verdict_detail": "DOĞRULANDI (IR/termal modalite) — IR grubu belirgin şekilde grayscale/düşük-doygunluk tek-bant infrared görünümünde; VL grubu doğal renkli fotoğraf. İki modalite açıkça FARKLI ve ID ile eşleşiyor.",
+  "visual_inspection": "PNG'ler asistan tarafından da gözle incelendi: IR grubu tutarlı biçimde GRAYSCALE kızılötesi görüntüler (bazılarında iletken hatları görünüyor); VL grubu doğal renkli fotoğraflar. Modaliteler net biçimde farklı ve seri+ID ile eşleşiyor.",
+  "modality_nuance": "IR görüntüler tek-bant GRAYSCALE kızılötesi (infrared) — ironbow/jet gibi renkli ısı-haritası (false-color heatmap) DEĞİL, kalibre radyometrik sıcaklık haritası da DEĞİL. Tezde '4000 kızılötesi/termal-bant görüntü, 4000 RGB ile eşli' demek doğrudur; 'renkli termal heatmap' veya 'sıcaklık ölçümü' DEMEK yanıltıcı olur.",
+  "visual_outputs": [
+    "thermal_samples.png",
+    "rgb_samples.png",
+    "pairs.png"
+  ],
+  "honesty_note": "Renk/kanal analizi termal olduğunu KESİN kanıtlamaz; bu bir GÖRSEL + istatistiksel gözlemdir. Veri/catalog DEĞİŞTİRİLMEDİ."
+}

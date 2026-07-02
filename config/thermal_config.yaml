@@ -1,0 +1,39 @@
+# =====================================================================
+# Termal analiz konfigurasyonu
+# Placeholder esikler - MVP-3 fazinda saha verisine gore kalibre edilecek.
+# =====================================================================
+
+thermal:
+  # R-JPEG parser ayarlari (DJI Thermal SDK ileride entegre edilecek)
+  parser:
+    backend: placeholder        # placeholder | dji_sdk | flir
+    default_emissivity: 0.95
+    default_reflected_temp_c: 20.0
+    default_distance_m: 30.0
+    default_humidity: 50.0
+    default_atmospheric_temp_c: 20.0
+
+  # Hotspot tespiti
+  hotspot:
+    # Mutlak esik (Celsius)
+    absolute_threshold_c: 60.0
+    # Cevre ortalamasinin uzerindeki delta
+    delta_above_ambient_c: 20.0
+    # Komsu noktalar arasi delta (asimetrik isinma)
+    delta_neighbor_c: 15.0
+    # Minimum hotspot alani (piksel)
+    min_area_px: 25
+
+  # Siddet sinifi esikleri (Celsius)
+  severity:
+    low_c: 40.0
+    medium_c: 60.0
+    high_c: 80.0
+    critical_c: 100.0
+
+  # RGB-termal hizalama
+  alignment:
+    # DJI H20T, M3T vb. icin sensor offset bilgisi (ileride doldurulacak)
+    sensor_offset_px: [0, 0]
+    homography_method: ORB    # ORB | SIFT | manual
+    enabled: true

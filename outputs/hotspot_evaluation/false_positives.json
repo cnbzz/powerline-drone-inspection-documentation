@@ -1,0 +1,134 @@
+{
+  "absolute": [],
+  "statistical": [
+    {
+      "image_id": "synth_0102",
+      "scenario": "01_Normal_PowerLine",
+      "n_pred": 3,
+      "max_pred_peak_c": 36.2,
+      "ambient_c": 18.71,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0111",
+      "scenario": "01_Normal_PowerLine",
+      "n_pred": 3,
+      "max_pred_peak_c": 37.79,
+      "ambient_c": 19.7,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0113",
+      "scenario": "01_Normal_PowerLine",
+      "n_pred": 1,
+      "max_pred_peak_c": 37.01,
+      "ambient_c": 18.52,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0120",
+      "scenario": "01_Normal_PowerLine",
+      "n_pred": 2,
+      "max_pred_peak_c": 37.34,
+      "ambient_c": 18.28,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0201",
+      "scenario": "02_Normal_Tower",
+      "n_pred": 1,
+      "max_pred_peak_c": 37.48,
+      "ambient_c": 21.69,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0205",
+      "scenario": "02_Normal_Tower",
+      "n_pred": 1,
+      "max_pred_peak_c": 37.07,
+      "ambient_c": 16.21,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0207",
+      "scenario": "02_Normal_Tower",
+      "n_pred": 1,
+      "max_pred_peak_c": 35.38,
+      "ambient_c": 15.92,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0215",
+      "scenario": "02_Normal_Tower",
+      "n_pred": 1,
+      "max_pred_peak_c": 30.51,
+      "ambient_c": 15.21,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0220",
+      "scenario": "02_Normal_Tower",
+      "n_pred": 1,
+      "max_pred_peak_c": 35.68,
+      "ambient_c": 18.63,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0710",
+      "scenario": "07_AmbientNoise_NoFault",
+      "n_pred": 1,
+      "max_pred_peak_c": 40.14,
+      "ambient_c": 18.57,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0712",
+      "scenario": "07_AmbientNoise_NoFault",
+      "n_pred": 3,
+      "max_pred_peak_c": 37.43,
+      "ambient_c": 18.75,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0717",
+      "scenario": "07_AmbientNoise_NoFault",
+      "n_pred": 1,
+      "max_pred_peak_c": 37.68,
+      "ambient_c": 19.11,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0719",
+      "scenario": "07_AmbientNoise_NoFault",
+      "n_pred": 1,
+      "max_pred_peak_c": 37.26,
+      "ambient_c": 18.59,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0806",
+      "scenario": "08_SunWarming_FalsePositive",
+      "n_pred": 5,
+      "max_pred_peak_c": 45.86,
+      "ambient_c": 19.63,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0813",
+      "scenario": "08_SunWarming_FalsePositive",
+      "n_pred": 1,
+      "max_pred_peak_c": 46.48,
+      "ambient_c": 18.86,
+      "reason": "predicted hotspot where ground truth has none"
+    },
+    {
+      "image_id": "synth_0819",
+      "scenario": "08_SunWarming_FalsePositive",
+      "n_pred": 1,
+      "max_pred_peak_c": 49.72,
+      "ambient_c": 20.02,
+      "reason": "predicted hotspot where ground truth has none"
+    }
+  ],
+  "hybrid": []
+}

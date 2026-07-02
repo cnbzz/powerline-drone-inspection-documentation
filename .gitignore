@@ -1,0 +1,124 @@
+# =====================================================================
+# Python standard
+# =====================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# pyenv / uv
+# .python-version is intentionally NOT ignored (we want to pin Python)
+.uv/
+
+# Environments
+.env
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs / editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# mypy / ruff caches
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+
+# =====================================================================
+# Project-specific (buyuk/gereksiz dosyalar git'e girmesin)
+# =====================================================================
+# Veri (~31GB) - tumu haric
+data/
+
+# Modeller (buyuk, 77MB+)
+models/
+*.pt
+*.pth
+*.onnx
+*.h5
+*.pkl
+*.pb
+
+# Yedekler
+*_backup_*/
+models/trained/defect_classifiers_backup_*/
+
+# Veritabanlari
+*.db
+*.sqlite
+*.sqlite3
+
+# Model egitim ciktilari
+runs/
+
+# Loglar
+*.log
+logs/
+
+# =====================================================================
+# Ciktilar: outputs/ tumuyle haric AMA kucuk sonuc JSON'lari korunur
+# =====================================================================
+outputs/**
+!outputs/**/
+!outputs/STAGE2_FINAL_RESULTS.json
+!outputs/cross_dataset_eval/**/*.json
+!outputs/training_logs/**/*.json
+!outputs/hotspot_evaluation/**/*.json
+!outputs/teias_verify/**/*.json
+# DB ve fault_files runtime ciktilari yine de haric
+outputs/db/**
+outputs/fault_files/**

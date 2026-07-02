@@ -1,0 +1,71 @@
+{
+  "label": "PRE-TRAINING BASELINE",
+  "stage": "7.3-A1 cross-dataset generalization (pre-retraining baseline)",
+  "model": "glass-insulator",
+  "model_classes": [
+    "good",
+    "missing-cap"
+  ],
+  "eval_dataset": "CPLID (data/external/cplid)",
+  "seed": 42,
+  "device": "cuda",
+  "n_images_evaluated": 848,
+  "n_failed": 0,
+  "class_mapping": {
+    "Normal_Insulators": "good",
+    "Defective_Insulators": "missing-cap"
+  },
+  "mapping_confidence": "DOĞRUDAN eşleme (heuristik değil): model sınıfları {good, missing-cap} CPLID klasörleriyle (Normal/Defective) birebir. Etiket görüntü düzeyinde (klasör = doğru etiket).",
+  "accuracy": 0.283,
+  "per_class": {
+    "good": {
+      "precision": 0.4794,
+      "recall": 0.155,
+      "f1": 0.2343,
+      "support": 600
+    },
+    "missing-cap": {
+      "precision": 0.2248,
+      "recall": 0.5927,
+      "f1": 0.3259,
+      "support": 248
+    }
+  },
+  "macro_f1": 0.2801,
+  "weighted_f1": 0.2611,
+  "self_test_f1": 0.9808,
+  "cross_vs_self_f1_drop": 0.7007,
+  "worst_class": "good",
+  "confusion_matrix": {
+    "labels": [
+      "good",
+      "missing-cap"
+    ],
+    "matrix": [
+      [
+        93,
+        507
+      ],
+      [
+        101,
+        147
+      ]
+    ],
+    "note": "satır=gerçek (CPLID klasörü), sütun=tahmin"
+  },
+  "domain_shift_notes": [
+    "HHATS modeli InsPLAD-fault KIRPILMIŞ izolatörlerle eğitildi; CPLID TAM aerial sahne (~1152x864) olduğu gibi verildi → girdi/ölçek uyumsuzluğu.",
+    "CPLID defektif görüntüleri SENTETİK (U-Net kompozit).",
+    "Farklı çekim kaynağı (State Grid China UAV vs InsPLAD Brezilya).",
+    "Çapraz-veri F1'in kendi-test F1'den düşük olması BEKLENEN domain-shift bulgusudur; başarısızlık değildir."
+  ],
+  "stn_plad_qualitative": {
+    "n_sampled": 40,
+    "predicted_distribution": {
+      "good": 17,
+      "missing-cap": 23
+    },
+    "note": "STN-PLAD'de cam-izolatör defect etiketi YOK ve içerik iletim yapılarıdır → doğrudan karşılaştırılamaz. Yalnızca modelin tahmin dağılımı NİTEL gözlem olarak verildi (doğruluk hesaplanamaz)."
+  },
+  "academic_framing": "Bu bir EĞİTİM ÖNCESİ baz çizgidir. Amaç, harici veriyle yeniden eğitim sonrası genelleme artışını kıyaslamak. Sayılar dürüstçe raporlanmıştır."
+}

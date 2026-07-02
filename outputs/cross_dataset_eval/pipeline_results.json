@@ -1,0 +1,78 @@
+{
+  "label": "FULL PIPELINE — YOLO+CROP+CLASSIFY",
+  "stage": "7.3-A1c cross-dataset via real pipeline (pre-retraining baseline)",
+  "model": "glass-insulator",
+  "model_classes": [
+    "good",
+    "missing-cap"
+  ],
+  "detector": "yolov8m_8class_v1",
+  "eval_dataset": "CPLID (data/external/cplid)",
+  "seed": 42,
+  "yolo_conf_threshold": 0.25,
+  "device": "cuda",
+  "n_images_total": 848,
+  "yolo_detection_rate": 1.0,
+  "n_detected": 848,
+  "n_undetected": 0,
+  "n_classified": 848,
+  "n_failed": 0,
+  "crop_logic": "en yüksek güvenli insulator (class 0-3) bbox'ı, TAM bbox (padding yok), PIL crop",
+  "yolo_label_distribution": {
+    "insulator_porcelain": 848
+  },
+  "yolo_label_note": "YOLO CPLID cam izolatörlerini LOKALİZE ediyor (yüksek güven) ama sınıfı çoğunlukla 'insulator_porcelain' veriyor. Kırpma için lokalizasyon yeterli; test edilen sınıflandırıcı glass-insulator. Tam-otomatik pipeline'da YOLO sınıf-yönlendirmesi (porcelain→Stage2 yok) bunları glass-Stage2'ye ULAŞTIRMAZDI — ayrı bulgu.",
+  "class_mapping": {
+    "Normal_Insulators": "good",
+    "Defective_Insulators": "missing-cap"
+  },
+  "accuracy": 0.5483,
+  "per_class": {
+    "good": {
+      "precision": 0.7364,
+      "recall": 0.5633,
+      "f1": 0.6383,
+      "support": 600
+    },
+    "missing-cap": {
+      "precision": 0.3265,
+      "recall": 0.5121,
+      "f1": 0.3987,
+      "support": 248
+    }
+  },
+  "macro_f1": 0.5185,
+  "weighted_f1": 0.5683,
+  "worst_class": "missing-cap",
+  "confusion_matrix": {
+    "labels": [
+      "good",
+      "missing-cap"
+    ],
+    "matrix": [
+      [
+        338,
+        262
+      ],
+      [
+        121,
+        127
+      ]
+    ],
+    "note": "satır=gerçek (klasör), sütun=tahmin; sadece tespit edilenler"
+  },
+  "comparison_macro_f1": {
+    "self_test": 0.9808,
+    "a1_shortcut_full_scene": 0.2801,
+    "a1c_full_pipeline": 0.5185,
+    "format_effect_shortcut_to_pipeline": 0.2384,
+    "residual_domain_shift_pipeline_to_self": 0.4622
+  },
+  "domain_shift_notes": [
+    "A1 kısayolu tam sahneyi (1152x864) doğrudan Stage2'ye verdi → girdi/ölçek uyumsuzluğu.",
+    "A1c gerçek akışı YOLO bbox'ını kırpıp Stage2'ye verir → format etkisi izole edilir.",
+    "Kalan pipeline→kendi-test farkı GERÇEK domain shift'tir (sentetik defect, farklı kaynak).",
+    "Çapraz-veri düşüşü BEKLENEN bulgu; başarısızlık değil."
+  ],
+  "academic_framing": "EĞİTİM ÖNCESİ baz çizgi, gerçek pipeline ile. Sayılar dürüstçe raporlanmıştır; A1 (kısayol) ve A1c (pipeline) yan yana korunur."
+}

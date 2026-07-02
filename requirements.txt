@@ -1,0 +1,50 @@
+# Powerline Drone Inspection - Python dependencies
+# pyproject.toml is the source of truth; this file mirrors it for pip users.
+
+# CUDA 12.6 destekli torch wheel'lari icin PyTorch resmi index'i.
+# pip kullaniyorsan asagidaki satir ile cu126 wheel'lari cekilir.
+--extra-index-url https://download.pytorch.org/whl/cu126
+
+
+# Core
+numpy
+pandas
+pyyaml
+python-dotenv
+loguru
+
+# Computer vision & ML
+opencv-python
+pillow
+ultralytics
+torch
+torchvision
+
+# EXIF & thermal
+exifread
+piexif
+# dji-thermal-parser: DJI SDK gerekiyor, ileride eklenecek
+
+# Geospatial
+folium
+geopy
+
+# Database
+sqlalchemy
+
+# Dashboard
+streamlit
+plotly
+
+# Reporting
+reportlab
+openpyxl
+jinja2
+
+# Dev
+pytest
+pytest-cov
+black
+ruff
+ipykernel
+jupyter

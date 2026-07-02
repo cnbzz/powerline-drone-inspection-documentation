@@ -1,0 +1,40 @@
+# =====================================================================
+# Risk skoru kurallari
+# Placeholder agirliklar - MVP-4 fazinda gercek arıza verisiyle kalibre.
+# =====================================================================
+
+risk:
+  # Genel formul: score = sum(component_i * weight_i), 0-100 araliginda normalize
+  formula: weighted_sum
+  scale_min: 0
+  scale_max: 100
+
+  # Bilesen agirliklari (toplam ~1.0)
+  weights:
+    visual_defect: 0.40        # YOLO confidence + sinif siddeti
+    thermal_anomaly: 0.35      # Hotspot sicakligi / delta
+    location_criticality: 0.15 # Yerlesim yeri, hat kritikligi
+    history: 0.10              # Daha onceki arıza kayitlari
+
+  # Gorsel arıza turleri icin baz skor (0-100)
+  visual_defect_base:
+    damaged_insulator: 70
+    missing_part: 80
+    bird_nest: 30
+    corrosion: 50
+    broken_conductor: 95
+    damper_displacement: 40
+
+  # Termal anomali skor egrisi (delta_above_ambient_c -> skor)
+  thermal_curve:
+    - { delta_c: 10, score: 10 }
+    - { delta_c: 20, score: 40 }
+    - { delta_c: 40, score: 75 }
+    - { delta_c: 60, score: 100 }
+
+  # Siniflandirma araligi
+  severity_bands:
+    - { name: low,      min: 0,  max: 30 }
+    - { name: medium,   min: 30, max: 60 }
+    - { name: high,     min: 60, max: 85 }
+    - { name: critical, min: 85, max: 100 }

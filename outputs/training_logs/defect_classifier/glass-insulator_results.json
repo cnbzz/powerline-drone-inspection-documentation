@@ -1,0 +1,58 @@
+{
+  "equipment": "glass-insulator",
+  "classes": [
+    "good",
+    "missing-cap"
+  ],
+  "best_val_f1": 0.9807674526121127,
+  "test_acc": 0.9152542372881356,
+  "test_f1": 0.9152542372881356,
+  "confusion_matrix": [
+    [
+      27,
+      2
+    ],
+    [
+      3,
+      27
+    ]
+  ],
+  "classification_report": {
+    "good": {
+      "precision": 0.9,
+      "recall": 0.9310344827586207,
+      "f1-score": 0.9152542372881356,
+      "support": 29.0
+    },
+    "missing-cap": {
+      "precision": 0.9310344827586207,
+      "recall": 0.9,
+      "f1-score": 0.9152542372881356,
+      "support": 30.0
+    },
+    "accuracy": 0.9152542372881356,
+    "macro avg": {
+      "precision": 0.9155172413793103,
+      "recall": 0.9155172413793103,
+      "f1-score": 0.9152542372881356,
+      "support": 59.0
+    },
+    "weighted avg": {
+      "precision": 0.9157802454704851,
+      "recall": 0.9152542372881356,
+      "f1-score": 0.9152542372881356,
+      "support": 59.0
+    }
+  },
+  "training_time_seconds": 495.81673097610474,
+  "training_time_minutes": 8.263612182935079,
+  "epochs_trained": 20,
+  "parameters": {
+    "total": 20180050,
+    "trainable": 20180050,
+    "total_mb": 76.98078155517578
+  },
+  "image_size": 384,
+  "architecture": "EfficientNetV2-S",
+  "timestamp": "2026-06-16T23:20:20.078098"
+}

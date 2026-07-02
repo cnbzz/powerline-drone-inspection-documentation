@@ -1,0 +1,47 @@
+# =====================================================================
+# Powerline Drone Inspection - Ana konfigurasyon
+# =====================================================================
+
+project:
+  name: powerline-drone-inspection
+  version: 0.1.0
+
+# --- Path'ler (proje kokune gore relatif) ----------------------------
+paths:
+  data:
+    root: data
+    raw: data/raw
+    external: data/external
+    processed: data/processed
+    yolo: data/yolo
+    annotations: data/annotations
+  models:
+    root: models
+    pretrained: models/pretrained
+    trained: models/trained
+  outputs:
+    root: outputs
+    predictions: outputs/predictions
+    reports: outputs/reports
+    logs: outputs/logs
+    db: outputs/db
+
+# --- Logging ----------------------------------------------------------
+logging:
+  level: INFO          # DEBUG | INFO | WARNING | ERROR | CRITICAL
+  console: true
+  file: outputs/logs/app.log
+  rotation: "10 MB"    # loguru rotation kurali
+  retention: "14 days"
+  format: "{time:YYYY-MM-DD HH:mm:ss} | {level:<8} | {name}:{function}:{line} | {message}"
+
+# --- Runtime / device -------------------------------------------------
+runtime:
+  device: auto         # auto | cuda | cpu - check_environment.py otomatik secer
+  seed: 42
+  num_workers: 4
+
+# --- Database ---------------------------------------------------------
+database:
+  url: "sqlite:///outputs/db/faults.db"
+  echo: false

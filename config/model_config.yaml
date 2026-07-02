@@ -1,0 +1,78 @@
+# =====================================================================
+# YOLO model konfigurasyonu
+# Placeholder degerler - MVP-2 fazinda hassas ayar yapilacak.
+# =====================================================================
+
+yolo:
+  # Mimari secimi: yolov8n, yolov8s, yolov8m, yolov8l, yolov8x, yolo11n, ...
+  base_model: yolov8n.pt
+  pretrained_dir: models/pretrained
+  trained_dir: models/trained
+
+  # Egitim parametreleri
+  train:
+    epochs: 100
+    batch_size: 16
+    image_size: 640
+    optimizer: AdamW
+    learning_rate: 0.001
+    weight_decay: 0.0005
+    patience: 30          # early stopping
+    workers: 4
+    project: outputs/predictions/yolo_runs
+    name: exp
+
+  # Inference parametreleri
+  inference:
+    conf_threshold: 0.25
+    iou_threshold: 0.45
+    max_detections: 300
+    half_precision: false  # FP16 (yalnizca CUDA'da etkili)
+
+  # Dataset config (YOLO data.yaml referansi)
+  data_yaml: data/yolo/data.yaml
+
+  # ---------------------------------------------------------------
+  # YOLOv8m 8-sinifli egitim kosusu (scripts/train_yolo.py okur).
+  # CLI ile override edilebilir: --epochs, --batch, --device, ...
+  # ---------------------------------------------------------------
+  training_run:
+    model: yolov8m.pt
+    data: data/yolo/data.yaml
+    epochs: 50
+    imgsz: 640
+    batch: 16
+    device: 0              # GPU index
+    workers: 4
+    project: models/trained
+    name: yolov8m_8class_v1
+    patience: 20           # early stopping
+    save: true
+    save_period: 10        # her 10 epoch'ta checkpoint
+    cache: false           # RAM yetmeyebilir
+    optimizer: auto        # Ultralytics karar versin
+    verbose: true
+    seed: 42
+    deterministic: true
+    resume: false
+    pretrained: true
+    amp: true              # mixed precision
+
+# Birlesik 8-sinifli sema (data/yolo/data.yaml ile ayni).
+classes:
+  - id: 0
+    name: insulator_polymer
+  - id: 1
+    name: insulator_glass
+  - id: 2
+    name: insulator_porcelain
+  - id: 3
+    name: insulator_generic
+  - id: 4
+    name: tower
+  - id: 5
+    name: spacer
+  - id: 6
+    name: damper
+  - id: 7
+    name: tower_id_plate

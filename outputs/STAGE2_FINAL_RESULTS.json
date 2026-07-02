@@ -1,0 +1,306 @@
+﻿{
+  "glass-insulator": {
+    "equipment": "glass-insulator",
+    "classes": [
+      "good",
+      "missing-cap"
+    ],
+    "best_val_f1": 0.9807674526121127,
+    "test_acc": 0.9152542372881356,
+    "test_f1": 0.9152542372881356,
+    "confusion_matrix": [
+      [
+        27,
+        2
+      ],
+      [
+        3,
+        27
+      ]
+    ],
+    "classification_report": {
+      "good": {
+        "precision": 0.9,
+        "recall": 0.9310344827586207,
+        "f1-score": 0.9152542372881356,
+        "support": 29.0
+      },
+      "missing-cap": {
+        "precision": 0.9310344827586207,
+        "recall": 0.9,
+        "f1-score": 0.9152542372881356,
+        "support": 30.0
+      },
+      "accuracy": 0.9152542372881356,
+      "macro avg": {
+        "precision": 0.9155172413793103,
+        "recall": 0.9155172413793103,
+        "f1-score": 0.9152542372881356,
+        "support": 59.0
+      },
+      "weighted avg": {
+        "precision": 0.9157802454704851,
+        "recall": 0.9152542372881356,
+        "f1-score": 0.9152542372881356,
+        "support": 59.0
+      }
+    },
+    "training_time_seconds": 495.81673097610474,
+    "training_time_minutes": 8.263612182935079,
+    "epochs_trained": 20,
+    "parameters": {
+      "total": 20180050,
+      "trainable": 20180050,
+      "total_mb": 76.98078155517578
+    },
+    "image_size": 384,
+    "architecture": "EfficientNetV2-S",
+    "timestamp": "2026-06-16T23:20:20.078098"
+  },
+  "lightning-rod-suspension": {
+    "equipment": "lightning-rod-suspension",
+    "classes": [
+      "good",
+      "rust"
+    ],
+    "best_val_f1": 1.0,
+    "test_acc": 0.9960159362549801,
+    "test_f1": 0.9960602012878595,
+    "confusion_matrix": [
+      [
+        230,
+        1
+      ],
+      [
+        0,
+        20
+      ]
+    ],
+    "classification_report": {
+      "good": {
+        "precision": 1.0,
+        "recall": 0.9956709956709957,
+        "f1-score": 0.9978308026030369,
+        "support": 231.0
+      },
+      "rust": {
+        "precision": 0.9523809523809523,
+        "recall": 1.0,
+        "f1-score": 0.975609756097561,
+        "support": 20.0
+      },
+      "accuracy": 0.9960159362549801,
+      "macro avg": {
+        "precision": 0.9761904761904762,
+        "recall": 0.9978354978354979,
+        "f1-score": 0.9867202793502989,
+        "support": 251.0
+      },
+      "weighted avg": {
+        "precision": 0.9962056535761714,
+        "recall": 0.9960159362549801,
+        "f1-score": 0.9960602012878595,
+        "support": 251.0
+      }
+    },
+    "training_time_seconds": 231.02881526947021,
+    "training_time_minutes": 3.85048025449117,
+    "epochs_trained": 17,
+    "parameters": {
+      "total": 20180050,
+      "trainable": 20180050,
+      "total_mb": 76.98078155517578
+    },
+    "image_size": 384,
+    "architecture": "EfficientNetV2-S",
+    "timestamp": "2026-06-16T23:24:12.369580"
+  },
+  "polymer-insulator-upper-shackle": {
+    "equipment": "polymer-insulator-upper-shackle",
+    "classes": [
+      "good",
+      "rust"
+    ],
+    "best_val_f1": 1.0,
+    "test_acc": 0.984375,
+    "test_f1": 0.9843788156288156,
+    "confusion_matrix": [
+      [
+        31,
+        0
+      ],
+      [
+        1,
+        32
+      ]
+    ],
+    "classification_report": {
+      "good": {
+        "precision": 0.96875,
+        "recall": 1.0,
+        "f1-score": 0.9841269841269841,
+        "support": 31.0
+      },
+      "rust": {
+        "precision": 1.0,
+        "recall": 0.9696969696969697,
+        "f1-score": 0.9846153846153847,
+        "support": 33.0
+      },
+      "accuracy": 0.984375,
+      "macro avg": {
+        "precision": 0.984375,
+        "recall": 0.9848484848484849,
+        "f1-score": 0.9843711843711844,
+        "support": 64.0
+      },
+      "weighted avg": {
+        "precision": 0.98486328125,
+        "recall": 0.984375,
+        "f1-score": 0.9843788156288156,
+        "support": 64.0
+      }
+    },
+    "training_time_seconds": 302.1198220252991,
+    "training_time_minutes": 5.035330367088318,
+    "epochs_trained": 12,
+    "parameters": {
+      "total": 20180050,
+      "trainable": 20180050,
+      "total_mb": 76.98078155517578
+    },
+    "image_size": 384,
+    "architecture": "EfficientNetV2-S",
+    "timestamp": "2026-06-16T23:29:15.883310"
+  },
+  "vari-grip": {
+    "equipment": "vari-grip",
+    "classes": [
+      "bird-nest",
+      "good",
+      "rust"
+    ],
+    "best_val_f1": 1.0,
+    "test_acc": 0.9750889679715302,
+    "test_f1": 0.9756127947288451,
+    "confusion_matrix": [
+      [
+        21,
+        1,
+        1
+      ],
+      [
+        4,
+        233,
+        1
+      ],
+      [
+        0,
+        0,
+        20
+      ]
+    ],
+    "classification_report": {
+      "bird-nest": {
+        "precision": 0.84,
+        "recall": 0.9130434782608695,
+        "f1-score": 0.875,
+        "support": 23.0
+      },
+      "good": {
+        "precision": 0.9957264957264957,
+        "recall": 0.9789915966386554,
+        "f1-score": 0.9872881355932204,
+        "support": 238.0
+      },
+      "rust": {
+        "precision": 0.9090909090909091,
+        "recall": 1.0,
+        "f1-score": 0.9523809523809523,
+        "support": 20.0
+      },
+      "accuracy": 0.9750889679715302,
+      "macro avg": {
+        "precision": 0.9149391349391349,
+        "recall": 0.9640116916331749,
+        "f1-score": 0.9382230293247242,
+        "support": 281.0
+      },
+      "weighted avg": {
+        "precision": 0.9768139649990184,
+        "recall": 0.9750889679715302,
+        "f1-score": 0.9756127947288451,
+        "support": 281.0
+      }
+    },
+    "training_time_seconds": 279.6227865219116,
+    "training_time_minutes": 4.660379775365194,
+    "epochs_trained": 13,
+    "parameters": {
+      "total": 20181331,
+      "trainable": 20181331,
+      "total_mb": 76.98566818237305
+    },
+    "image_size": 384,
+    "architecture": "EfficientNetV2-S",
+    "timestamp": "2026-06-16T23:33:56.823536"
+  },
+  "yoke-suspension": {
+    "equipment": "yoke-suspension",
+    "classes": [
+      "good",
+      "rust"
+    ],
+    "best_val_f1": 1.0,
+    "test_acc": 0.9954876778896217,
+    "test_f1": 0.9963713490248594,
+    "confusion_matrix": [
+      [
+        5716,
+        26
+      ],
+      [
+        0,
+        20
+      ]
+    ],
+    "classification_report": {
+      "good": {
+        "precision": 1.0,
+        "recall": 0.9954719609892023,
+        "f1-score": 0.9977308430790713,
+        "support": 5742.0
+      },
+      "rust": {
+        "precision": 0.43478260869565216,
+        "recall": 1.0,
+        "f1-score": 0.6060606060606061,
+        "support": 20.0
+      },
+      "accuracy": 0.9954876778896217,
+      "macro avg": {
+        "precision": 0.717391304347826,
+        "recall": 0.9977359804946011,
+        "f1-score": 0.8018957245698387,
+        "support": 5762.0
+      },
+      "weighted avg": {
+        "precision": 0.9980381208215746,
+        "recall": 0.9954876778896217,
+        "f1-score": 0.9963713490248594,
+        "support": 5762.0
+      }
+    },
+    "training_time_seconds": 199.82127165794373,
+    "training_time_minutes": 3.3303545276323954,
+    "epochs_trained": 14,
+    "parameters": {
+      "total": 20180050,
+      "trainable": 20180050,
+      "total_mb": 76.98078155517578
+    },
+    "image_size": 384,
+    "architecture": "EfficientNetV2-S",
+    "timestamp": "2026-06-16T23:37:17.934329"
+  }
+}
