@@ -15,6 +15,11 @@ from src.defect_classifier.model import create_defect_classifier
 # Equipment → class names mapping (eğitilmiş modellerden)
 EQUIPMENT_MODELS_DIR = Path('models/trained/defect_classifiers')
 
+# Post-hoc temperature-scaling calibration (per-equipment T). Optional file —
+# absent → T=1.0 everywhere (uncalibrated, original behaviour). See
+# src/defect_classifier/calibration.py.
+CALIBRATION_PATH = EQUIPMENT_MODELS_DIR / 'calibration.json'
+
 EQUIPMENT_LIST = [
     'glass-insulator',
     'lightning-rod-suspension',
@@ -52,9 +57,14 @@ IMAGENET_STD = [0.229, 0.224, 0.225]
 class DefectInferenceEngine:
     """5 ekipman için defect classifier yükleyici + Grad-CAM."""
 
-    def __init__(self, device: str = 'cuda'):
+    def __init__(self, device: str = 'cuda', use_calibration: bool = True):
         self.device = device if torch.cuda.is_available() else 'cpu'
         self.models: Dict[str, dict] = {}  # equipment → {model, classes, image_size}
+
+        # Post-hoc calibration: per-equipment temperature. Toggle with the flag so
+        # demos can show raw vs calibrated side by side.
+        self.use_calibration = use_calibration
+        self.temperatures: Dict[str, float] = self._load_calibration()
 
         # Transform (inference için augmentation YOK)
         self.transform = T.Compose([
@@ -62,6 +72,32 @@ class DefectInferenceEngine:
             T.ToTensor(),
             T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD),
         ])
+
+    @staticmethod
+    def _load_calibration() -> Dict[str, float]:
+        """Load per-equipment temperatures from calibration.json, or {} if absent.
+
+        Backward compatible: a missing/invalid file yields no temperatures, so
+        every prediction falls back to T=1.0 (original, uncalibrated behaviour).
+        """
+        import json
+        if not CALIBRATION_PATH.exists():
+            return {}
+        try:
+            data = json.loads(CALIBRATION_PATH.read_text(encoding='utf-8'))
+        except Exception:
+            return {}
+        temps: Dict[str, float] = {}
+        for eq, info in data.items():
+            if eq.startswith('_'):
+                continue  # skip _meta
+            try:
+                t = float(info['temperature'])
+                if t > 0:
+                    temps[eq] = t
+            except (KeyError, TypeError, ValueError):
+                continue
+        return temps
 
     def load_model(self, equipment: str):
         """Belirli bir ekipman modelini yükle (lazy loading)."""
@@ -112,18 +148,27 @@ class DefectInferenceEngine:
         # Preprocess
         img_tensor = self.transform(image).unsqueeze(0).to(self.device)
 
-        # Predict
+        # Forward pass -> raw logits (temperature applied post-hoc below).
         with torch.no_grad():
             logits = model(img_tensor)
-            probs = F.softmax(logits, dim=1).squeeze().cpu().numpy()
 
-        # Highest probability class
-        pred_idx = int(probs.argmax())
+        # Temperature scaling: calibrated = softmax(logits / T). T>0 is monotonic,
+        # so the predicted class is unchanged — only the confidence is corrected.
+        temperature = self.temperatures.get(equipment, 1.0) if self.use_calibration else 1.0
+        calibrated = bool(self.use_calibration and equipment in self.temperatures)
+
+        raw_probs = F.softmax(logits, dim=1).squeeze().cpu().numpy()
+        cal_probs = F.softmax(logits / temperature, dim=1).squeeze().cpu().numpy()
+
+        # Highest probability class (identical for raw/cal — T is monotonic).
+        pred_idx = int(cal_probs.argmax())
         pred_class = classes[pred_idx]
-        confidence = float(probs[pred_idx])
 
-        # All class probabilities
-        all_probs = {classes[i]: float(probs[i]) for i in range(len(classes))}
+        # Public fields carry the CALIBRATED (honest) confidence; raw kept for
+        # transparency/comparison. Existing field names are preserved.
+        confidence = float(cal_probs[pred_idx])
+        all_probs = {classes[i]: float(cal_probs[i]) for i in range(len(classes))}
+        raw_all = {classes[i]: float(raw_probs[i]) for i in range(len(classes))}
 
         # Defect mı? (good dışındaki her şey defect)
         is_defective = pred_class != 'good'
@@ -135,6 +180,11 @@ class DefectInferenceEngine:
             'confidence': confidence,
             'all_probabilities': all_probs,
             'is_defective': is_defective,
+            # --- calibration transparency (additive; does not break callers) ---
+            'calibrated': calibrated,
+            'temperature': float(temperature),
+            'raw_confidence': float(raw_probs[pred_idx]),
+            'raw_probabilities': raw_all,
         }
 
     def generate_gradcam(

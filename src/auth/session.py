@@ -17,10 +17,12 @@ page navigation automatically, like Streamlit's other session state.
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Optional
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 from src.auth import auth_db
 
@@ -32,6 +34,77 @@ BEDAS_BLUE = "#003A8C"
 BEDAS_GREEN = "#009A3A"
 
 _SESSION_KEY = "auth_user"
+# Token that survives full-page reloads (raw <a href> navigation). Held in a
+# browser cookie and in session_state so we can invalidate it on logout.
+_TOKEN_KEY = "_auth_sid"
+_COOKIE_NAME = "hhats_sid"
+_COOKIE_MAX_AGE = auth_db.SESSION_TTL_HOURS * 3600
+
+
+# --------------------------------------------------------------------------- #
+# Cookie helpers — persist the login across full-page reloads.                 #
+#                                                                              #
+# WHY: the dashboard navigates via raw ``<a href="?...">`` anchors (fault rows,#
+# nav/KPI cards). Each click is a FULL page load, and Streamlit does not keep  #
+# ``st.session_state`` across page loads — so ``auth_user`` was lost and the   #
+# login gate re-triggered. A server-validated token in a cookie lets           #
+# ``current_user()`` restore the session after such a reload.                  #
+# --------------------------------------------------------------------------- #
+def _get_cookie_token() -> Optional[str]:
+    """Read the session token from the request cookie, or ``None``.
+
+    Guarded: ``st.context.cookies`` is unavailable in headless/AppTest contexts,
+    in which case we simply fall back to session-state-only behaviour.
+    """
+    try:
+        token = st.context.cookies.get(_COOKIE_NAME)
+    except Exception:
+        return None
+    # Only trust a real, non-empty string. In headless/AppTest contexts
+    # ``st.context.cookies`` may be a mock whose ``.get`` returns a non-str.
+    if isinstance(token, str) and token:
+        return token
+    return None
+
+
+def _set_cookie(token: str) -> None:
+    """Set the session cookie via a 0-height JS component (SameSite=Strict).
+
+    ``document.cookie`` cannot set HttpOnly, but the value is only an opaque,
+    server-validated, expiring token — never password material.
+    """
+    try:
+        safe = json.dumps(token)  # JS-safe string literal
+        components.html(
+            f"""
+            <script>
+            try {{
+                document.cookie = "{_COOKIE_NAME}=" + {safe} +
+                    "; path=/; max-age={_COOKIE_MAX_AGE}; SameSite=Strict";
+            }} catch (e) {{}}
+            </script>
+            """,
+            height=0,
+        )
+    except Exception:
+        pass
+
+
+def _clear_cookie() -> None:
+    """Expire the session cookie in the browser."""
+    try:
+        components.html(
+            f"""
+            <script>
+            try {{
+                document.cookie = "{_COOKIE_NAME}=; path=/; max-age=0; SameSite=Strict";
+            }} catch (e) {{}}
+            </script>
+            """,
+            height=0,
+        )
+    except Exception:
+        pass
 
 # Page paths for post-login redirect (relative to pages/ auto-discovery root).
 _ADMIN_PAGE = "pages/5_Admin.py"
@@ -42,8 +115,25 @@ _DASHBOARD_PAGE = "pages/1_Dashboard.py"
 # Session accessors                                                            #
 # --------------------------------------------------------------------------- #
 def current_user() -> Optional[dict]:
-    """Return the logged-in user dict, or ``None`` if not authenticated."""
-    return st.session_state.get(_SESSION_KEY)
+    """Return the logged-in user dict, or ``None`` if not authenticated.
+
+    If ``st.session_state`` has no user (e.g. right after a full-page reload from
+    an ``<a href>`` navigation), try to restore it from the server-validated
+    session cookie before giving up.
+    """
+    user = st.session_state.get(_SESSION_KEY)
+    if user is not None:
+        return user
+
+    # Reload recovery: restore from the cookie token if it is still valid.
+    token = _get_cookie_token()
+    if token:
+        restored = auth_db.get_session_user(token)
+        if restored is not None:
+            st.session_state[_SESSION_KEY] = restored
+            st.session_state[_TOKEN_KEY] = token
+            return restored
+    return None
 
 
 def is_logged_in() -> bool:
@@ -63,7 +153,17 @@ def logout() -> None:
             auth_db.log_activity(user["username"], "logout", "Kullanici cikis yapti")
         except Exception:
             pass
+    # Invalidate the server-side session token and expire the cookie so the
+    # reload-recovery path cannot re-authenticate after logout.
+    token = st.session_state.get(_TOKEN_KEY) or _get_cookie_token()
+    if token:
+        try:
+            auth_db.delete_session(token)
+        except Exception:
+            pass
+    _clear_cookie()
     st.session_state.pop(_SESSION_KEY, None)
+    st.session_state.pop(_TOKEN_KEY, None)
     try:
         st.switch_page("app.py")
     except Exception:
@@ -166,6 +266,14 @@ def _handle_login_submit(username: str, password: str) -> None:
         return
 
     st.session_state[_SESSION_KEY] = user
+    # Issue a reload-persistent session token and mirror it into a cookie so the
+    # login survives the app's <a href> (full-reload) navigation.
+    try:
+        token = auth_db.create_session(user["username"])
+        st.session_state[_TOKEN_KEY] = token
+        _set_cookie(token)
+    except Exception:
+        pass
     try:
         auth_db.log_activity(username, "login_success", f"Rol: {user['role']}")
     except Exception:
@@ -195,6 +303,18 @@ def require_login() -> dict:
     if user is None:
         _render_login_form()
         st.stop()
+    # Refresh the reload-persistent cookie on every authenticated render. This
+    # guarantees the cookie is present on the first page after login (even if the
+    # login-time write raced with st.switch_page) and slides its expiry forward.
+    token = st.session_state.get(_TOKEN_KEY)
+    if token is None:
+        try:
+            token = auth_db.create_session(user["username"])
+            st.session_state[_TOKEN_KEY] = token
+        except Exception:
+            token = None
+    if token:
+        _set_cookie(token)
     return user
 
 

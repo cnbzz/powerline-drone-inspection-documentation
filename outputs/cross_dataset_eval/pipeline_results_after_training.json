@@ -1,0 +1,126 @@
+{
+  "label": "A3 POST-RETRAIN — YOLO+CROP+CLASSIFY",
+  "stage": "7.3-A3 cross-dataset after external-data retraining",
+  "model": "glass-insulator",
+  "model_classes": [
+    "good",
+    "missing-cap"
+  ],
+  "detector": "yolov8m_8class_v1",
+  "eval_dataset": "CPLID (data/external/cplid)",
+  "seed": 42,
+  "yolo_conf_threshold": 0.25,
+  "device": "cuda",
+  "n_images_total": 848,
+  "yolo_detection_rate": 1.0,
+  "n_undetected": 0,
+  "n_classified": 848,
+  "n_failed": 0,
+  "yolo_label_distribution": {
+    "insulator_porcelain": 848
+  },
+  "class_mapping": {
+    "Normal_Insulators": "good",
+    "Defective_Insulators": "missing-cap"
+  },
+  "leakage_note": "A2 retraining added CPLID train+val crops to glass-insulator training. FULL-848 metrics therefore include SEEN images (optimistic). HELD-OUT CPLID-test is the honest generalization number.",
+  "full_848": {
+    "n": 848,
+    "accuracy": 0.9847,
+    "macro_f1": 0.9812,
+    "weighted_f1": 0.9845,
+    "per_class": {
+      "good": {
+        "precision": 0.9788,
+        "recall": 1.0,
+        "f1": 0.9893,
+        "support": 600
+      },
+      "missing-cap": {
+        "precision": 1.0,
+        "recall": 0.9476,
+        "f1": 0.9731,
+        "support": 248
+      }
+    },
+    "confusion_matrix": [
+      [
+        600,
+        0
+      ],
+      [
+        13,
+        235
+      ]
+    ]
+  },
+  "held_out_test": {
+    "n": 127,
+    "accuracy": 0.9843,
+    "macro_f1": 0.9806,
+    "weighted_f1": 0.9841,
+    "per_class": {
+      "good": {
+        "precision": 0.9783,
+        "recall": 1.0,
+        "f1": 0.989,
+        "support": 90
+      },
+      "missing-cap": {
+        "precision": 1.0,
+        "recall": 0.9459,
+        "f1": 0.9722,
+        "support": 37
+      }
+    },
+    "confusion_matrix": [
+      [
+        90,
+        0
+      ],
+      [
+        2,
+        35
+      ]
+    ]
+  },
+  "seen_train_val": {
+    "n": 721,
+    "accuracy": 0.9847,
+    "macro_f1": 0.9813,
+    "weighted_f1": 0.9846,
+    "per_class": {
+      "good": {
+        "precision": 0.9789,
+        "recall": 1.0,
+        "f1": 0.9893,
+        "support": 510
+      },
+      "missing-cap": {
+        "precision": 1.0,
+        "recall": 0.9479,
+        "f1": 0.9732,
+        "support": 211
+      }
+    },
+    "confusion_matrix": [
+      [
+        510,
+        0
+      ],
+      [
+        11,
+        200
+      ]
+    ]
+  },
+  "baseline_macro_f1_pre_training_full848": 0.5185,
+  "comparison_macro_f1": {
+    "pre_training_full848": 0.5185,
+    "post_training_full848_leaky": 0.9812,
+    "post_training_heldout_honest": 0.9806,
+    "delta_full848": 0.4627,
+    "delta_heldout": 0.4621
+  },
+  "honesty_note": "Sayılar olduğu gibi raporlanmıştır; şişirme yok. Leaky vs honest ayrı verildi."
+}

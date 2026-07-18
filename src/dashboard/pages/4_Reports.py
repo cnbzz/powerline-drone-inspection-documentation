@@ -12,6 +12,7 @@ sayfa-başına-loader desenine uygun (bkz. 1_Dashboard, 2_Map).
 
 from __future__ import annotations
 
+import base64
 import io
 import sys
 import zipfile
@@ -157,6 +158,39 @@ def _thermal_cell(status) -> str:
     color = THERMAL_COLORS.get(status, "#8e8e93")
     return (f"<span style='color:{color}; font-weight:600;'>"
             f"{THERMAL_TR.get(status, status)}</span>")
+
+
+def _build_zip_from_fids(fids: list[str]) -> tuple[bytes, int]:
+    """Bir arıza-ID listesinden ZIP üret. (zip_bytes, failed_count) döndürür.
+
+    Mevcut filtreli-ZIP ile aynı PDF üreticisini (``_report_pdf``) kullanır;
+    biri patlarsa atlar, diğerlerine devam eder.
+    """
+    buf = io.BytesIO()
+    failed = 0
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for fid in fids:
+            pdf = _report_pdf(fid)
+            if pdf is None:
+                failed += 1
+                continue
+            zf.writestr(f"HHATS_Saha_Raporu_{fid}.pdf", pdf)
+    return buf.getvalue(), failed
+
+
+def _pdf_preview_html(pdf_bytes: bytes, height: int = 780) -> str:
+    """PDF bytes → base64 data-URI <iframe> (satır-içi önizleme).
+
+    Bazı tarayıcılar data: PDF iframe'ini kısıtlar → çağıran taraf her zaman bir
+    indirme butonu + 'görünmüyorsa indirin' notu göstermeli (fallback).
+    """
+    b64 = base64.b64encode(pdf_bytes).decode("ascii")
+    return (
+        f'<iframe src="data:application/pdf;base64,{b64}" '
+        f'width="100%" height="{height}" '
+        f'style="border:1px solid {BEDAS_BLUE}; border-radius:10px;" '
+        f'type="application/pdf"></iframe>'
+    )
 
 
 # --------------------------------------------------------------------------- #
@@ -331,12 +365,100 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --- TEKLİ İNDİRME (sayfalı — her satırda İndir butonu) ---
+# --- ÖNİZLEME, SEÇİM & İNDİRME (native widget'lar — rerun'da korunur) ---
 st.markdown(f"<h3 style='color:{BEDAS_BLUE} !important; margin-top:1.5rem;'>"
-            f"⬇️ Tekli PDF İndirme</h3>", unsafe_allow_html=True)
-st.caption(f"Performans için sayfa başına {PAGE_SIZE} rapor listelenir; "
-           f"yalnızca görünen sayfanın PDF'leri üretilir.")
+            f"👁️ Rapor Önizleme, Seçim & İndirme</h3>", unsafe_allow_html=True)
+st.caption(f"Bir satırdaki 👁️ ile raporu CANLI önizleyin, ☑ ile seçip toplu "
+           f"indirin. Performans için sayfa başına {PAGE_SIZE} rapor listelenir; "
+           f"seçim sayfalar arasında korunur.")
 
+# Rerun'da kaybolmasın diye seçim/önizleme session_state'te tutulur.
+if "rep_preview" not in st.session_state:
+    st.session_state["rep_preview"] = None
+if "rep_selected" not in st.session_state:
+    st.session_state["rep_selected"] = set()
+
+# Filtre dışında kalan (artık görünmeyen) seçimleri temizle — tutarlılık.
+_visible_fids = set(filtered["fault_id_short"])
+st.session_state["rep_selected"] &= _visible_fids
+if st.session_state["rep_preview"] not in _visible_fids:
+    st.session_state["rep_preview"] = None
+selected: set = st.session_state["rep_selected"]
+
+# ---- CANLI ÖNİZLEME PANELİ (seçili arıza) ----
+prev_fid = st.session_state.get("rep_preview")
+if prev_fid:
+    prow = filtered[filtered["fault_id_short"] == prev_fid]
+    label = prow.iloc[0]["equipment_label"] if not prow.empty else prev_fid
+    pc1, pc2 = st.columns([4, 1])
+    with pc1:
+        st.markdown(
+            f"<div style='background:{theme['bg_tertiary']}; border-left:5px solid "
+            f"{BEDAS_GREEN}; border-radius:10px; padding:10px 16px; margin:0.3rem 0;'>"
+            f"<b style='color:{BEDAS_BLUE};'>📄 Önizlenen rapor:</b> "
+            f"<span style='font-family:monospace;'>{prev_fid}</span> — "
+            f"<span style='color:{theme['text_secondary']};'>{label}</span></div>",
+            unsafe_allow_html=True)
+    with pc2:
+        if st.button("✖ Önizlemeyi kapat", key="rep_prev_close",
+                     use_container_width=True):
+            st.session_state["rep_preview"] = None
+            st.rerun()
+
+    prev_pdf = _report_pdf(prev_fid)
+    if prev_pdf:
+        st.markdown(_pdf_preview_html(prev_pdf), unsafe_allow_html=True)
+        st.caption("Önizleme tarayıcınızda görünmüyorsa aşağıdan indirin "
+                   "(bazı tarayıcılar gömülü PDF'i kısıtlar).")
+        st.download_button(
+            "⬇️ Bu Raporu İndir", data=prev_pdf,
+            file_name=f"HHATS_Saha_Raporu_{prev_fid}.pdf",
+            mime="application/pdf", key=f"rep_prev_dl_{prev_fid}",
+            use_container_width=False)
+    else:
+        st.warning("Bu arızanın PDF raporu üretilemedi.")
+    st.markdown("---")
+
+# ---- SEÇİLENLERİ TOPLU İNDİR (checkbox seçimi) ----
+sel_list = sorted(selected)
+sc1, sc2, sc3 = st.columns([1.4, 1.4, 2])
+with sc1:
+    n_sel = len(sel_list)
+    zip_sel_subset = sel_list[:ZIP_LIMIT]
+    make_zip_sel = st.button(
+        f"🗜️ Seçilenleri ZIP Hazırla ({n_sel})",
+        key="rep_make_zip_sel", disabled=(n_sel == 0), use_container_width=True)
+with sc2:
+    if st.button(f"🧹 Seçimi Temizle", key="rep_clear_sel",
+                 disabled=(n_sel == 0), use_container_width=True):
+        st.session_state["rep_selected"] = set()
+        st.rerun()
+with sc3:
+    if n_sel == 0:
+        st.caption("Toplu indirmek için aşağıdan ☑ ile rapor seçin.")
+    elif n_sel > ZIP_LIMIT:
+        st.warning(f"⚠️ {n_sel} seçildi; performans için ilk {ZIP_LIMIT} rapor "
+                   f"ZIP'e eklenecek.")
+
+if make_zip_sel and zip_sel_subset:
+    with st.spinner(f"{len(zip_sel_subset)} PDF raporu üretiliyor..."):
+        data, failed = _build_zip_from_fids(zip_sel_subset)
+    st.session_state["rep_zip_sel"] = {
+        "data": data, "failed": failed, "n": len(zip_sel_subset),
+        "sig": "|".join(zip_sel_subset),
+    }
+
+zipsel = st.session_state.get("rep_zip_sel")
+if zipsel and zipsel["sig"] == "|".join(zip_sel_subset) and zip_sel_subset:
+    ok_n = zipsel["n"] - zipsel["failed"]
+    st.download_button(
+        f"⬇️ Seçili ZIP İndir ({ok_n} rapor)", data=zipsel["data"],
+        file_name="HHATS_Secili_Raporlar.zip", mime="application/zip",
+        key="rep_zip_sel_dl", use_container_width=False)
+    if zipsel["failed"]:
+        st.warning(f"{zipsel['failed']} rapor üretilemedi ve ZIP'e eklenmedi.")
+
+# ---- SAYFALI ETKİLEŞİMLİ LİSTE (checkbox + önizle + tekli indir) ----
 n_pages = (len(filtered) + PAGE_SIZE - 1) // PAGE_SIZE
 page = 1
 if n_pages > 1:
@@ -345,9 +467,22 @@ if n_pages > 1:
 start = (int(page) - 1) * PAGE_SIZE
 page_rows = filtered.iloc[start:start + PAGE_SIZE]
 
+# Sütun başlıkları
+hc = st.columns([0.5, 1.1, 1.6, 0.9, 1.0, 1.1])
+for col, txt in zip(hc, ["☑", "Arıza ID", "Ekipman", "Risk", "Önizle", "İndir"]):
+    col.markdown(f"<div style='font-weight:600; color:{theme['text_secondary']}; "
+                 f"font-size:0.8rem;'>{txt}</div>", unsafe_allow_html=True)
+
 for _, row in page_rows.iterrows():
-    c_id, c_eq, c_risk, c_btn = st.columns([1.2, 1.6, 1, 1.2])
     fid = row["fault_id_short"]
+    c_cb, c_id, c_eq, c_risk, c_prev, c_btn = st.columns([0.5, 1.1, 1.6, 0.9, 1.0, 1.1])
+    with c_cb:
+        checked = st.checkbox("seç", value=(fid in selected), key=f"rep_cb_{fid}",
+                              label_visibility="collapsed")
+        if checked:
+            selected.add(fid)
+        else:
+            selected.discard(fid)
     with c_id:
         st.markdown(f"<div style='font-family:monospace; padding-top:6px; "
                     f"color:{theme['text_primary']};'>{fid}</div>",
@@ -359,13 +494,18 @@ for _, row in page_rows.iterrows():
         st.markdown(f"<div style='padding-top:4px;'>"
                     f"{_risk_badge(row['risk_level'], row['risk_level_tr'])}</div>",
                     unsafe_allow_html=True)
+    with c_prev:
+        if st.button("👁️", key=f"rep_prev_{fid}", use_container_width=True,
+                     help="Bu raporu canlı önizle"):
+            st.session_state["rep_preview"] = fid
+            st.rerun()
     with c_btn:
         pdf = _report_pdf(fid)
         if pdf:
-            st.download_button("📄 PDF İndir", data=pdf,
+            st.download_button("📄", data=pdf,
                                file_name=f"HHATS_Saha_Raporu_{fid}.pdf",
                                mime="application/pdf", key=f"rep_dl_{fid}",
-                               use_container_width=True)
+                               use_container_width=True, help="Bu raporu indir")
         else:
-            st.button("📄 Üretilemedi", disabled=True, key=f"rep_dis_{fid}",
-                      use_container_width=True)
+            st.button("⚠️", disabled=True, key=f"rep_dis_{fid}",
+                      use_container_width=True, help="PDF üretilemedi")

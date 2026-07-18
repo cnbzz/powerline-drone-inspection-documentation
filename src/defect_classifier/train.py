@@ -41,18 +41,28 @@ def train_one_equipment(
     early_stop_patience: int = 10,
     image_size: int = 384,
     device: str = 'cuda',
+    data_root: str = 'data/insplad_fault/organized',   # override for augmented sets
+    log_dir: str = 'outputs/training_logs/defect_classifier',
+    seed: int = 42,              # determinism (numpy/torch)
 ) -> dict:
     """Train classifier for one equipment type."""
+
+    # Deterministic seed (data shuffle / init reproducibility)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
 
     print(f"\n{'='*70}")
     print(f"🎯 TRAINING: {equipment} (EfficientNetV2-S, {image_size}x{image_size})")
     print(f"{'='*70}\n")
 
-    data_root = Path('data/insplad_fault/organized')
+    data_root = Path(data_root)
     output_dir = Path(f'models/trained/defect_classifiers/{equipment}')
     output_dir.mkdir(parents=True, exist_ok=True)
-    log_dir = Path('outputs/training_logs/defect_classifier')
+    log_dir = Path(log_dir)
     log_dir.mkdir(parents=True, exist_ok=True)
+    print(f"  Data root: {data_root}")
+    print(f"  Log dir:   {log_dir}")
 
     # Datasets
     train_ds = InsPLADFaultDataset(data_root, equipment, split='train', image_size=image_size)

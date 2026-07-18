@@ -16,9 +16,10 @@ Design notes:
 
 from __future__ import annotations
 
+import secrets
 import sqlite3
 from contextlib import contextmanager
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Iterator, Optional
 
@@ -80,6 +81,19 @@ def init_db(db_path: str | Path = DEFAULT_DB_PATH) -> None:
                 action    TEXT NOT NULL,
                 detail    TEXT,
                 timestamp TEXT NOT NULL
+            )
+            """
+        )
+        # Server-side login sessions — an opaque token restores the session after
+        # a full-page reload (raw <a href> navigation) so the user stays logged in.
+        # The token is random and server-validated; no password material is stored.
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS sessions (
+                token      TEXT PRIMARY KEY,
+                username   TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                expires_at TEXT NOT NULL
             )
             """
         )
@@ -234,6 +248,87 @@ def list_users(db_path: str | Path = DEFAULT_DB_PATH) -> list[dict]:
             """
         ).fetchall()
     return [dict(r) for r in rows]
+
+
+# --------------------------------------------------------------------------- #
+# Server-side sessions (reload-persistent login)                              #
+# --------------------------------------------------------------------------- #
+SESSION_TTL_HOURS = 12
+
+
+def create_session(
+    username: str,
+    ttl_hours: int = SESSION_TTL_HOURS,
+    db_path: str | Path = DEFAULT_DB_PATH,
+) -> str:
+    """Create a login session and return its opaque token.
+
+    The token (cryptographically random) is what a browser cookie carries so the
+    session survives full-page reloads. It is server-validated on every restore.
+    """
+    token = secrets.token_urlsafe(32)
+    now = datetime.now()
+    expires = now + timedelta(hours=ttl_hours)
+    with _connect(db_path) as conn:
+        conn.execute(
+            """
+            INSERT INTO sessions (token, username, created_at, expires_at)
+            VALUES (?, ?, ?, ?)
+            """,
+            (token, username, now.isoformat(timespec="seconds"),
+             expires.isoformat(timespec="seconds")),
+        )
+    return token
+
+
+def get_session_user(
+    token: str, db_path: str | Path = DEFAULT_DB_PATH
+) -> Optional[dict]:
+    """Return the user dict for a valid, unexpired token whose user is active.
+
+    Returns ``None`` for unknown/expired tokens or deactivated users. Mirrors the
+    (safe) fields returned by :func:`verify_user` — never password material.
+    """
+    if not token:
+        return None
+    with _connect(db_path) as conn:
+        row = conn.execute(
+            "SELECT username, expires_at FROM sessions WHERE token = ?", (token,)
+        ).fetchone()
+    if row is None:
+        return None
+    try:
+        if datetime.fromisoformat(row["expires_at"]) < datetime.now():
+            delete_session(token, db_path)
+            return None
+    except ValueError:
+        return None
+    user = get_user(row["username"], db_path)
+    if user is None or not user["is_active"]:
+        return None
+    return {
+        "id": user["id"],
+        "username": user["username"],
+        "role": user["role"],
+        "is_active": bool(user["is_active"]),
+        "last_login": user["last_login"],
+    }
+
+
+def delete_session(token: str, db_path: str | Path = DEFAULT_DB_PATH) -> None:
+    """Invalidate a session token server-side (used on logout)."""
+    if not token:
+        return
+    with _connect(db_path) as conn:
+        conn.execute("DELETE FROM sessions WHERE token = ?", (token,))
+
+
+def purge_expired_sessions(db_path: str | Path = DEFAULT_DB_PATH) -> int:
+    """Delete expired sessions. Returns the number removed."""
+    now = datetime.now().isoformat(timespec="seconds")
+    with _connect(db_path) as conn:
+        cur = conn.execute("DELETE FROM sessions WHERE expires_at < ?", (now,))
+        return cur.rowcount
 
 
 def log_activity(

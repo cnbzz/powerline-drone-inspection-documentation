@@ -1,0 +1,70 @@
+{
+  "run_tag": "retrain_ext_20260705",
+  "timestamp": "2026-07-05T13:22:19.839295",
+  "total_minutes": 30.34,
+  "hyperparams": {
+    "epochs": 50,
+    "batch_size": 16,
+    "lr": 0.001,
+    "image_size": 384,
+    "patience": 10,
+    "seed": 42
+  },
+  "comparison": {
+    "glass-insulator": {
+      "status": "ok",
+      "old_val_f1": 0.9807674526121127,
+      "new_val_f1": 0.9790236847981039,
+      "old_test_f1": 0.9152542372881356,
+      "new_test_f1": 0.6983944779386743,
+      "test_delta": -0.2169,
+      "regressed_on_test": true,
+      "external_note": "InsPLAD + CPLID (VOC-bbox crop, train/val only)",
+      "val_note": "glass val set is InsPLAD+CPLID (not directly comparable to old InsPLAD-only val)"
+    },
+    "lightning-rod-suspension": {
+      "status": "ok",
+      "old_val_f1": 1.0,
+      "new_val_f1": 1.0,
+      "old_test_f1": 0.9960602012878595,
+      "new_test_f1": 1.0,
+      "test_delta": 0.0039,
+      "regressed_on_test": false,
+      "external_note": "InsPLAD only (no proven external mapping)",
+      "val_note": "same InsPLAD val set"
+    },
+    "polymer-insulator-upper-shackle": {
+      "status": "ok",
+      "old_val_f1": 1.0,
+      "new_val_f1": 1.0,
+      "old_test_f1": 0.9843788156288156,
+      "new_test_f1": 0.96875,
+      "test_delta": -0.0156,
+      "regressed_on_test": true,
+      "external_note": "InsPLAD only (no proven external mapping)",
+      "val_note": "same InsPLAD val set"
+    },
+    "vari-grip": {
+      "status": "ok",
+      "old_val_f1": 1.0,
+      "new_val_f1": 1.0,
+      "old_test_f1": 0.9756127947288451,
+      "new_test_f1": 0.9584609150177124,
+      "test_delta": -0.0172,
+      "regressed_on_test": true,
+      "external_note": "InsPLAD only (no proven external mapping)",
+      "val_note": "same InsPLAD val set"
+    },
+    "yoke-suspension": {
+      "status": "ok",
+      "old_val_f1": 1.0,
+      "new_val_f1": 1.0,
+      "old_test_f1": 0.9963713490248594,
+      "new_test_f1": 0.9934624693596045,
+      "test_delta": -0.0029,
+      "regressed_on_test": true,
+      "external_note": "InsPLAD only (no proven external mapping)",
+      "val_note": "same InsPLAD val set"
+    }
+  }
+}

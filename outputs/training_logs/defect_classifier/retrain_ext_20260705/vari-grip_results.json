@@ -1,0 +1,72 @@
+{
+  "equipment": "vari-grip",
+  "classes": [
+    "bird-nest",
+    "good",
+    "rust"
+  ],
+  "best_val_f1": 1.0,
+  "test_acc": 0.9572953736654805,
+  "test_f1": 0.9584609150177124,
+  "confusion_matrix": [
+    [
+      22,
+      1,
+      0
+    ],
+    [
+      6,
+      229,
+      3
+    ],
+    [
+      0,
+      2,
+      18
+    ]
+  ],
+  "classification_report": {
+    "bird-nest": {
+      "precision": 0.7857142857142857,
+      "recall": 0.9565217391304348,
+      "f1-score": 0.8627450980392157,
+      "support": 23.0
+    },
+    "good": {
+      "precision": 0.9870689655172413,
+      "recall": 0.9621848739495799,
+      "f1-score": 0.9744680851063829,
+      "support": 238.0
+    },
+    "rust": {
+      "precision": 0.8571428571428571,
+      "recall": 0.9,
+      "f1-score": 0.8780487804878049,
+      "support": 20.0
+    },
+    "accuracy": 0.9572953736654805,
+    "macro avg": {
+      "precision": 0.8766420361247947,
+      "recall": 0.9395688710266715,
+      "f1-score": 0.9050873212111346,
+      "support": 281.0
+    },
+    "weighted avg": {
+      "precision": 0.9613405676419543,
+      "recall": 0.9572953736654805,
+      "f1-score": 0.9584609150177124,
+      "support": 281.0
+    }
+  },
+  "training_time_seconds": 324.5954780578613,
+  "training_time_minutes": 5.409924634297689,
+  "epochs_trained": 14,
+  "parameters": {
+    "total": 20181331,
+    "trainable": 20181331,
+    "total_mb": 76.98566818237305
+  },
+  "image_size": 384,
+  "architecture": "EfficientNetV2-S",
+  "timestamp": "2026-07-05T13:18:33.865221"
+}

@@ -1,0 +1,58 @@
+{
+  "equipment": "polymer-insulator-upper-shackle",
+  "classes": [
+    "good",
+    "rust"
+  ],
+  "best_val_f1": 1.0,
+  "test_acc": 0.96875,
+  "test_f1": 0.96875,
+  "confusion_matrix": [
+    [
+      31,
+      0
+    ],
+    [
+      2,
+      31
+    ]
+  ],
+  "classification_report": {
+    "good": {
+      "precision": 0.9393939393939394,
+      "recall": 1.0,
+      "f1-score": 0.96875,
+      "support": 31.0
+    },
+    "rust": {
+      "precision": 1.0,
+      "recall": 0.9393939393939394,
+      "f1-score": 0.96875,
+      "support": 33.0
+    },
+    "accuracy": 0.96875,
+    "macro avg": {
+      "precision": 0.9696969696969697,
+      "recall": 0.9696969696969697,
+      "f1-score": 0.96875,
+      "support": 64.0
+    },
+    "weighted avg": {
+      "precision": 0.9706439393939394,
+      "recall": 0.96875,
+      "f1-score": 0.96875,
+      "support": 64.0
+    }
+  },
+  "training_time_seconds": 539.6568949222565,
+  "training_time_minutes": 8.994281582037608,
+  "epochs_trained": 19,
+  "parameters": {
+    "total": 20180050,
+    "trainable": 20180050,
+    "total_mb": 76.98078155517578
+  },
+  "image_size": 384,
+  "architecture": "EfficientNetV2-S",
+  "timestamp": "2026-07-05T13:13:07.783873"
+}

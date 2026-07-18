@@ -1,0 +1,58 @@
+{
+  "equipment": "lightning-rod-suspension",
+  "classes": [
+    "good",
+    "rust"
+  ],
+  "best_val_f1": 1.0,
+  "test_acc": 1.0,
+  "test_f1": 1.0,
+  "confusion_matrix": [
+    [
+      231,
+      0
+    ],
+    [
+      0,
+      20
+    ]
+  ],
+  "classification_report": {
+    "good": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 231.0
+    },
+    "rust": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 20.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 251.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 251.0
+    }
+  },
+  "training_time_seconds": 244.20265126228333,
+  "training_time_minutes": 4.070044187704722,
+  "epochs_trained": 16,
+  "parameters": {
+    "total": 20180050,
+    "trainable": 20180050,
+    "total_mb": 76.98078155517578
+  },
+  "image_size": 384,
+  "architecture": "EfficientNetV2-S",
+  "timestamp": "2026-07-05T13:04:06.619159"
+}
