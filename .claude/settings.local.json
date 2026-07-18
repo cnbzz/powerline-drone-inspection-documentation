@@ -123,7 +123,14 @@
       "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe scripts/test_reports_preview_zip.py)",
       "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe scripts/test_reports_apptest.py)",
       "Bash(git config *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git remote *)",
+      "Bash(git ls-tree *)",
+      "Bash(sort -k4 -n -r)",
+      "Bash(git rev-list *)",
+      "Bash(git cat-file *)",
+      "Bash(sort -k2 -n -r)"
     ]
   }
 }
